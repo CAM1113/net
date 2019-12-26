@@ -6,7 +6,6 @@ public class Head {
     private String contentType = "";
     private String other = "";
 
-
     public Head() {
     }
 

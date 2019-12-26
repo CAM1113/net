@@ -19,7 +19,6 @@ public class ReadUtils {
     }
 
     public static Head readHead(InputStream inputStream) throws HeadTooSmallException {
-
         byte[] bytes = new byte[Profile.HEAD_SIZE];
         try {
             inputStream.read(bytes,0,Profile.HEAD_SIZE);
@@ -42,7 +41,4 @@ public class ReadUtils {
         }
         return builder.toString();
     }
-
-
-
 }
