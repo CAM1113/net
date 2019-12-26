@@ -1,4 +1,4 @@
-package net.wang.can.entitys;
+package server.wang.can.entitys;
 
 public class BaseEntity<T> {
     String token = "";

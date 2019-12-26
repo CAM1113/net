@@ -1,28 +1,19 @@
 package net.wang.can.sockets;
 
 import com.sun.istack.internal.NotNull;
-import net.wang.can.entitys.OrderEntity;
-import net.wang.can.profiles.Profile;
 import net.wang.can.protol.head.Head;
-import net.wang.can.protol.head.Protocals;
 import net.wang.can.protol.interfaces.IOServlet;
 import net.wang.can.protol.utils.ReadUtils;
-import net.wang.can.protol.utils.WriteUtils;
-import server.wang.can.OrderSolver;
-import util.wang.can.IOUtils;
 import util.wang.can.LogUtils;
 
 import java.io.*;
 import java.net.Socket;
 
-
-import static net.wang.can.protol.head.Protocals.STATUS_SUCCESS;
-
-public class SocketRunnable implements Runnable {
+public class ServerSocketRunnable implements Runnable {
     Socket socket = null;
     IOServlet ioServlet = null;
 
-    public SocketRunnable(@NotNull Socket socket, @NotNull IOServlet ioServlet) {
+    public ServerSocketRunnable(@NotNull Socket socket, @NotNull IOServlet ioServlet) {
         this.socket = socket;
         this.ioServlet = ioServlet;
     }
@@ -52,7 +43,8 @@ public class SocketRunnable implements Runnable {
                 LogUtils.w(e.getMessage());
             }
         }
-
+        socket = null;
+        ioServlet = null;
     }
 
     private void runNetWork(Socket socket, IOServlet ioServlet) throws Exception {
@@ -66,27 +58,8 @@ public class SocketRunnable implements Runnable {
         LogUtils.w(socket.getInetAddress().getHostAddress() + ": head.getOther:" + head.getOther());
 
         //外部接受客户端的输入
-
-        Head sendHead;
-        try {
-            sendHead = ioServlet.onServerReceive(head, inputStream);
-        } catch (Exception e) {
-            //用户处理输入流时产生异常
-            Head exceptionHead = new Head(Protocals.STATUS_FAIL, Protocals.MESSAGE_EXCEPTION_HAPPEN,
-                    Protocals.CONTENT_NONE, e.getMessage());
-            WriteUtils.writeHead(exceptionHead, outputStream);
-            socket.shutdownOutput();
-            LogUtils.w("exception :" + e.getMessage());
-            return;
-        } finally {
-            socket.shutdownInput();
-        }
-        if (sendHead == null) {
-            sendHead = new Head(STATUS_SUCCESS, head.getMessage(), head.getContentType(), head.getOther());
-        }
-        //外部响应客户端的输出
-        WriteUtils.writeHead(sendHead, outputStream);
-        ioServlet.onServerPost(outputStream);
+        ioServlet.onServerReceive(head, inputStream, outputStream);
+        socket.shutdownInput();
         socket.shutdownOutput();
     }
 

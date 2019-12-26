@@ -1,7 +1,7 @@
 package server.wang.can;
 
 import net.wang.can.profiles.Profile;
-import net.wang.can.sockets.SocketRunnable;
+import net.wang.can.sockets.ServerSocketRunnable;
 
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -16,8 +16,8 @@ public class ServerApplication {
         while(true)
         {
             Socket socket = server.accept();
-            SocketRunnable socketRunnable = new SocketRunnable(socket,new IOServletImp());
-            executor.execute(socketRunnable);
+            ServerSocketRunnable serverSocketRunnable = new ServerSocketRunnable(socket,new IOServletImp());
+            executor.execute(serverSocketRunnable);
         }
     }
 

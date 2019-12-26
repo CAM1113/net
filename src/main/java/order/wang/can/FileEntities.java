@@ -8,6 +8,9 @@ public class FileEntities {
     public FileEntities() {
     }
 
+    public FileEntities(List<FileEntity> fileEntities) {
+        this.fileEntities = fileEntities;
+    }
 
     public List<FileEntity> getFileEntities() {
         return fileEntities;

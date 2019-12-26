@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import net.wang.can.profiles.Profile;
 import net.wang.can.protol.head.Head;
 import net.wang.can.protol.exceptions.HeadTooSmallException;
+import util.wang.can.LogUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -34,11 +35,11 @@ public class ReadUtils {
 
     public static String readString(InputStream inputStream) throws Exception{
         byte[] bytes = new byte[1024];
-        int len = 0;
         StringBuilder builder = new StringBuilder();
-        while ((len = inputStream.read(bytes))>0) {
+        while (inputStream.read(bytes)>0) {
             builder.append(new String(bytes).trim());
         }
+        LogUtils.i(" string 读取 :"+builder.toString());
         return builder.toString();
     }
 }

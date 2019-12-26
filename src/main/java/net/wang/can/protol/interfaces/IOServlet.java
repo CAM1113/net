@@ -4,8 +4,8 @@ import net.wang.can.protol.head.Head;
 
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.Socket;
 
 public interface IOServlet {
-    Head onServerReceive(Head head, InputStream inputStream) throws Exception;
-    void onServerPost(OutputStream outputStream) throws Exception;
+    void onServerReceive(Head head, InputStream inputStream, OutputStream outputStream) throws Exception;
 }
