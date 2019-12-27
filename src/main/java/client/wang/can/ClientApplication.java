@@ -12,8 +12,9 @@ public class ClientApplication {
 //        File file = new File("E:\\work\\1409.1556.pdf");
 //        OrderSolver.upload(file,"testNew\\");
 
-        OrderSolver.downLoad("testNew\\1409.1556.pdf", new File("E:\\1409.1556.pdf"));
+//        OrderSolver.downLoad("testNew\\1409.1556.pdf", new File("E:\\1409.1556.pdf"));
 
+        OrderSolver.deleteFile("wang\\");
 
 
 //        Socket socket = new Socket(Profile.SERVER_IP,Profile.PORT);

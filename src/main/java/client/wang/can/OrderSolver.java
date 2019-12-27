@@ -42,7 +42,7 @@ public class OrderSolver {
         socket.shutdownInput();
     }
 
-    public static void upload(File file, String currentPath) throws Exception {
+    public static Head upload(File file, String currentPath) throws Exception {
         if (!file.exists()) {
             throw new Exception("file doesn't exist");
         }
@@ -57,20 +57,20 @@ public class OrderSolver {
         Head returnHead = ReadUtils.readHead(inputStream);
         socket.shutdownInput();
         socket.close();
+        return returnHead;
     }
 
     //currentPath:下载文件的路径，包含文件名
-    public static void downLoad(String currentPath, File localFile) throws Exception {
+    public static Head downLoad(String currentPath, File localFile) throws Exception {
         if (localFile.exists()) {
             throw new Exception("localFile has already exist");
         }
         Head head = new Head(Protocals.STATUS_SUCCESS, CommandString.downLoad, Protocals.CONTENT_NONE, currentPath);
         Socket socket = getSocket(head);
         socket.shutdownOutput();
-        InputStream inputStream =  socket.getInputStream();
+        InputStream inputStream = socket.getInputStream();
         Head returnHead = ReadUtils.readHead(inputStream);
-        if(!returnHead.getStatus().equals(Protocals.STATUS_SUCCESS))
-        {
+        if (!returnHead.getStatus().equals(Protocals.STATUS_SUCCESS)) {
             //服务器下载不成功
             IOUtils.killInputStream(inputStream);
             socket.shutdownInput();
@@ -78,10 +78,23 @@ public class OrderSolver {
             throw new Exception(head.getOther());
         }
         FileOutputStream fileOutputStream = new FileOutputStream(localFile);
-        IOUtils.streamCopy(inputStream , fileOutputStream);
+        IOUtils.streamCopy(inputStream, fileOutputStream);
         fileOutputStream.close();
         socket.shutdownInput();
         socket.close();
+        return returnHead;
+    }
+
+    //currentPath:删除文件的路径，包含文件名
+    public static Head deleteFile(String currentPath) throws Exception {
+        Head head = new Head(Protocals.STATUS_SUCCESS, CommandString.delete, Protocals.CONTENT_NONE, currentPath);
+        Socket socket = getSocket(head);
+        socket.shutdownOutput();
+        InputStream inputStream = socket.getInputStream();
+        Head returnHead = ReadUtils.readHead(inputStream);
+        socket.shutdownInput();
+        socket.close();
+        return returnHead;
     }
 
     //创建Socket对象，同时写进Head
