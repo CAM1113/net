@@ -6,5 +6,5 @@ public interface Profile {
     String SERVER_IP = "127.0.0.1";
 
     String ROOT_PATH = "D:\\StudyWork\\FileRootPath\\";
-    String TEMP_FILE_PATH = ROOT_PATH + "temp\\";
+    String userFolder = "temp\\";
 }

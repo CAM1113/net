@@ -11,13 +11,17 @@ public class IOUtils {
         int len = 0;
         while ((len = inputStream.read(bytes)) > 0) {
             outputStream.write(bytes,0,len);
+            outputStream.flush();
         }
     }
 
-    static void mkdir(String fullPath)
+    //将输入流消耗掉
+    public static void killInputStream(InputStream inputStream) throws Exception
     {
-        File file = new File(fullPath);
-        file.mkdir();
+        byte[] bytes = new byte[1024];
+        int len = 0;
+        while (inputStream.read(bytes)> 0) {
+        }
     }
 
 

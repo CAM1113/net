@@ -38,12 +38,12 @@ public class WriteUtils {
 
     public static void writeHead(Head head, OutputStream outputStream) throws Exception {
         String string = new Gson().toJson(head);
-        byte[] lengthBytes = string.getBytes();
-        if (lengthBytes.length > Profile.HEAD_SIZE) {
+        if (string.length() > Profile.HEAD_SIZE) {
             throw new HeadTooLargeException("Head's size can't larger than " + Profile.HEAD_SIZE);
         }
         byte[] targetBytes = new byte[Profile.HEAD_SIZE];
-        string.getBytes(0, lengthBytes.length, targetBytes, 0);
+
+        string.getBytes(0, string.length(), targetBytes, 0);
         outputStream.write(targetBytes, 0, Profile.HEAD_SIZE);
     }
 

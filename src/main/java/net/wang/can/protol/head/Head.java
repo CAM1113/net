@@ -1,5 +1,7 @@
 package net.wang.can.protol.head;
 
+import com.google.gson.Gson;
+
 public class Head {
     private String status = "";
     private String message = "";
@@ -46,5 +48,10 @@ public class Head {
 
     public void setOther(String other) {
         this.other = other;
+    }
+
+    @Override
+    public String toString() {
+        return new Gson().toJson(this);
     }
 }
