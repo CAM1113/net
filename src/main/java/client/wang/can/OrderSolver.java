@@ -1,9 +1,8 @@
 package client.wang.can;
 
-import com.sun.xml.internal.ws.api.pipe.ContentType;
 import net.wang.can.profiles.Profile;
 import net.wang.can.protol.head.Protocals;
-import server.wang.can.entitys.OrderEntity;
+import entity.wang.can.OrderEntity;
 import net.wang.can.protol.head.Head;
 import net.wang.can.protol.utils.ReadUtils;
 import net.wang.can.protol.utils.WriteUtils;

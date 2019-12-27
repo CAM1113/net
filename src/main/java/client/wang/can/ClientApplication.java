@@ -14,11 +14,11 @@ public class ClientApplication {
 
 //        OrderSolver.downLoad("testNew\\1409.1556.pdf", new File("E:\\1409.1556.pdf"));
 
-        OrderSolver.deleteFile("wang\\");
+//        OrderSolver.deleteFile("wang\\");
 
 
-//        Socket socket = new Socket(Profile.SERVER_IP,Profile.PORT);
-//        OrderSolver.solveOrder(CommandString.ls,"","","wang",socket);
+        Socket socket = new Socket(Profile.SERVER_IP,Profile.PORT);
+        OrderSolver.solveOrder(CommandString.ls,"","","",socket);
 
     }
 

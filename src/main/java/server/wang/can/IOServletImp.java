@@ -1,6 +1,6 @@
 package server.wang.can;
 
-import com.sun.org.apache.xpath.internal.operations.Or;
+import entity.wang.can.OrderEntity;
 import net.wang.can.profiles.Profile;
 import net.wang.can.protol.head.Head;
 import net.wang.can.protol.head.Protocals;
@@ -10,12 +10,10 @@ import net.wang.can.protol.utils.WriteUtils;
 import order.wang.can.CommandString;
 import order.wang.can.FileEntities;
 import order.wang.can.FileEntity;
-import server.wang.can.entitys.OrderEntity;
 
 import java.io.File;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.Socket;
 import java.util.List;
 
 import static net.wang.can.profiles.Profile.userFolder;
