@@ -19,7 +19,7 @@ public class ReadUtils {
         return gson.fromJson(readString,clazz);
     }
 
-    public static Head readHead(InputStream inputStream) throws HeadTooSmallException {
+    public static Head readHead(InputStream inputStream) throws Exception {
         byte[] bytes = new byte[Profile.HEAD_SIZE];
         try {
             inputStream.read(bytes,0,Profile.HEAD_SIZE);
@@ -27,7 +27,7 @@ public class ReadUtils {
             e.printStackTrace();
             throw new HeadTooSmallException();
         }
-        String gsonStr = new String(bytes).trim();
+        String gsonStr = new String(bytes,Profile.CODE_TYPE).trim();
         System.out.println(gsonStr);
         Head head = new Gson().fromJson(gsonStr, Head.class);
         return head;
@@ -37,7 +37,7 @@ public class ReadUtils {
         byte[] bytes = new byte[1024];
         StringBuilder builder = new StringBuilder();
         while (inputStream.read(bytes)>0) {
-            builder.append(new String(bytes).trim());
+            builder.append(new String(bytes,Profile.CODE_TYPE).trim());
         }
         LogUtils.i(" string 读取 :"+builder.toString());
         return builder.toString();

@@ -1,4 +1,4 @@
-package order.wang.can;
+package entity.wang.can;
 
 import java.util.List;
 

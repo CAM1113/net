@@ -17,8 +17,7 @@ public class ClientApplication {
 //        OrderSolver.deleteFile("wang\\");
 
 
-        Socket socket = new Socket(Profile.SERVER_IP,Profile.PORT);
-        OrderSolver.solveOrder(CommandString.ls,"","","",socket);
+        OrderSolver.ls("\\");
 
     }
 

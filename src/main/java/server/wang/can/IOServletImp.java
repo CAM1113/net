@@ -1,15 +1,15 @@
 package server.wang.can;
 
-import entity.wang.can.OrderEntity;
 import net.wang.can.profiles.Profile;
 import net.wang.can.protol.head.Head;
 import net.wang.can.protol.head.Protocals;
 import net.wang.can.protol.interfaces.IOServlet;
-import net.wang.can.protol.utils.ReadUtils;
 import net.wang.can.protol.utils.WriteUtils;
 import order.wang.can.CommandString;
-import order.wang.can.FileEntities;
-import order.wang.can.FileEntity;
+import entity.wang.can.FileEntities;
+import entity.wang.can.FileEntity;
+import util.wang.can.LogUtils;
+import util.wang.can.Utils;
 
 import java.io.File;
 import java.io.InputStream;
@@ -42,13 +42,20 @@ public class IOServletImp implements IOServlet {
 
     //获取列表，
     // 参数head.getMessage() == CommandString.ls
-    //inputStream中存放OrderEntity对象
-    //OrderEntity对象中 orderEntity.getCurrentPath() 存放当前工作路径
+    //head.getOther()中存放当前路径
+    //成功，则在输出流中返回文件列表
+    //失败，则在headOther
     private void ls(Head head, InputStream inputStream, OutputStream outputStream) throws Exception {
-
-        OrderEntity orderEntity = (OrderEntity) ReadUtils.readGsonObject(OrderEntity.class.getCanonicalName(), inputStream);
-        List<FileEntity> list = OrderSolver.ls(orderEntity);
-        FileEntities fileEntities = new FileEntities(list);
+        FileEntities fileEntities = new FileEntities();
+        try {
+            List<FileEntity> list = OrderSolver.ls(Utils.exchangeFileSaperator(head.getOther()));
+            fileEntities.setFileEntities(list);
+        } catch (Exception e) {
+            LogUtils.w("Exception in ls e = " + e.getMessage());
+            Head returnHead = new Head(Protocals.STATUS_FAIL, head.getMessage(), Protocals.CONTENT_NONE, e.getMessage());
+            WriteUtils.writeHead(returnHead, outputStream);
+            return;
+        }
         Head returnHead = new Head(Protocals.STATUS_SUCCESS, head.getMessage(), Protocals.CONTENT_GSON_OBJ, "");
         WriteUtils.writeHead(returnHead, outputStream);
         WriteUtils.writeGsonObject(fileEntities, outputStream);
@@ -62,7 +69,7 @@ public class IOServletImp implements IOServlet {
     //上传成功。返回正常Head
     private void upload(Head head, InputStream inputStream, OutputStream outputStream) throws Exception {
         try {
-            OrderSolver.upload(head.getOther(), inputStream);
+            OrderSolver.upload(Utils.exchangeFileSaperator(head.getOther()), inputStream);
         } catch (Exception e) {
             Head returnHead = new Head(Protocals.STATUS_FAIL, Protocals.MESSAGE_EXCEPTION_HAPPEN,
                     Protocals.CONTENT_NONE, "file upload Fail:" + e.getMessage());
@@ -113,7 +120,7 @@ public class IOServletImp implements IOServlet {
 
     //判断给定路径的文件是否为空。为空则返回异常输出，方法返回null
     private File solveFileExist(Head head, OutputStream outputStream) throws Exception {
-        String currentPath = head.getOther();
+        String currentPath = Utils.exchangeFileSaperator(head.getOther());
         File file = new File(Profile.ROOT_PATH + userFolder + currentPath);
         if (!file.exists()) {
             Head returnHead = new Head(Protocals.STATUS_FAIL, Protocals.MESSAGE_EXCEPTION_HAPPEN, Protocals.CONTENT_NONE, "file doesn't exist");

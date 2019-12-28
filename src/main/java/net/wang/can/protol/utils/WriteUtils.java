@@ -3,7 +3,6 @@ package net.wang.can.protol.utils;
 import com.google.gson.Gson;
 import net.wang.can.profiles.Profile;
 import net.wang.can.protol.head.Head;
-import net.wang.can.protol.head.Protocals;
 import net.wang.can.protol.exceptions.HeadTooLargeException;
 import util.wang.can.LogUtils;
 
@@ -23,17 +22,9 @@ public class WriteUtils {
             throw new Exception("o == null");
         }
         String s = new Gson().toJson(o);
+        System.out.println(s);
         writeString(s, outputStream);
         return true;
-    }
-
-    public static void writeHead(String status, String contentType, String message, String others, OutputStream outputStream) throws Exception {
-        Head head = new Head();
-        head.setStatus(status.trim().replace("\n", " "));
-        head.setContentType(contentType.trim().replace("\n", " "));
-        head.setMessage(message.trim().replace("\n", " "));//去除换行
-        head.setOther(others.trim().replace("\n", " "));//去除换行
-        writeHead(head, outputStream);
     }
 
     public static void writeHead(Head head, OutputStream outputStream) throws Exception {
@@ -41,9 +32,13 @@ public class WriteUtils {
         if (string.length() > Profile.HEAD_SIZE) {
             throw new HeadTooLargeException("Head's size can't larger than " + Profile.HEAD_SIZE);
         }
+        //将字符串编码为指定编码的字节
+        byte[] code = string.getBytes(Profile.CODE_TYPE);
+        //填充到目标字节数组中。写进输出流
         byte[] targetBytes = new byte[Profile.HEAD_SIZE];
-
-        string.getBytes(0, string.length(), targetBytes, 0);
+        for (int i = 0; i < code.length; i++) {
+            targetBytes[i] = code[i];
+        }
         outputStream.write(targetBytes, 0, Profile.HEAD_SIZE);
     }
 
@@ -58,7 +53,7 @@ public class WriteUtils {
     }
 
     private static void writeString(String s, OutputStream outputStream) throws Exception {
-        byte[] bytes = s.getBytes();
+        byte[] bytes = s.getBytes(Profile.CODE_TYPE);
         outputStream.write(bytes);
     }
 }

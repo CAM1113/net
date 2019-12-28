@@ -2,8 +2,8 @@ package server.wang.can;
 
 import entity.wang.can.OrderEntity;
 import net.wang.can.profiles.Profile;
-import order.wang.can.FileEntity;
-import util.wang.can.IOUtils;
+import entity.wang.can.FileEntity;
+import util.wang.can.Utils;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -13,8 +13,7 @@ import static net.wang.can.profiles.Profile.*;
 
 public class OrderSolver {
 
-    public static List<FileEntity> ls(OrderEntity orderEntity) {
-        String filePath = orderEntity.getCurrentPath();
+    public static List<FileEntity> ls(String filePath) {
         List<FileEntity> list = new ArrayList<>();
         File f = new File(Profile.ROOT_PATH + userFolder + filePath);
         String[] names = f.list();
@@ -42,12 +41,12 @@ public class OrderSolver {
         if(file.exists())
         {
             //文件已经存在，把输入流中的数据消耗掉，避免客户端异常
-            IOUtils.killInputStream(inputStream);
+            Utils.killInputStream(inputStream);
             throw new Exception("文件已经存在");
         }
         file.createNewFile();
         FileOutputStream outputStream = new FileOutputStream(file);
-        IOUtils.streamCopy(inputStream,outputStream);
+        Utils.streamCopy(inputStream,outputStream);
         outputStream.close();
     }
 
@@ -61,7 +60,7 @@ public class OrderSolver {
             return;
         }
         FileInputStream fileInputStream = new FileInputStream(file);
-        IOUtils.streamCopy(fileInputStream,outputStream);
+        Utils.streamCopy(fileInputStream,outputStream);
         fileInputStream.close();
     }
 

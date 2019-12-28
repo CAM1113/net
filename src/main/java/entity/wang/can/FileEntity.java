@@ -1,4 +1,4 @@
-package order.wang.can;
+package entity.wang.can;
 
 public class FileEntity {
 
