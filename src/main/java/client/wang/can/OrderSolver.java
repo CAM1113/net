@@ -20,7 +20,7 @@ import java.util.List;
 public class OrderSolver {
 
     public static List<FileEntity> ls(String currentPath) throws Exception {
-        Socket socket = new Socket(Profile.SERVER_IP,Profile.PORT);
+        Socket socket = new Socket(Profile.SERVER_IP, Profile.PORT);
         OutputStream outputStream = socket.getOutputStream();
         Head head = new Head(Protocals.STATUS_SUCCESS, CommandString.ls, Protocals.CONTENT_NONE, currentPath);
         WriteUtils.writeHead(head, outputStream);
@@ -28,8 +28,7 @@ public class OrderSolver {
 
         InputStream inputStream = socket.getInputStream();
         Head returnHead = ReadUtils.readHead(inputStream);
-        if(returnHead.getStatus().equals(Protocals.STATUS_FAIL))
-        {
+        if (returnHead.getStatus().equals(Protocals.STATUS_FAIL)) {
             throw new Exception(head.getOther());//head.getOther()中存放了异常信息
         }
         FileEntities o = (FileEntities) ReadUtils.readGsonObject(FileEntities.class.getName(), inputStream);
@@ -44,7 +43,9 @@ public class OrderSolver {
         }
         Head head = new Head(Protocals.STATUS_SUCCESS, CommandString.upload, Protocals.CONTENT_FILE, currentPath + file.getName());
         Socket socket = getSocket(head);
+
         OutputStream outputStream = socket.getOutputStream();
+
         FileInputStream fileInputStream = new FileInputStream(file);
         Utils.streamCopy(fileInputStream, outputStream);
         fileInputStream.close();

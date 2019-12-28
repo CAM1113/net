@@ -9,15 +9,15 @@ import java.net.Socket;
 
 public class ClientApplication {
     public static void main(String[] arge) throws Exception {
-//        File file = new File("E:\\work\\1409.1556.pdf");
-//        OrderSolver.upload(file,"testNew\\");
+        File file = new File("D:\\StudyWork\\test.txt");
+        OrderSolver.upload(file,Profile.FILE_SEPARATOR);
 
 //        OrderSolver.downLoad("testNew\\1409.1556.pdf", new File("E:\\1409.1556.pdf"));
 
 //        OrderSolver.deleteFile("wang\\");
 
 
-        OrderSolver.ls("\\");
+//        OrderSolver.ls("\\");
 
     }
 

@@ -29,11 +29,12 @@ public class WriteUtils {
 
     public static void writeHead(Head head, OutputStream outputStream) throws Exception {
         String string = new Gson().toJson(head);
-        if (string.length() > Profile.HEAD_SIZE) {
-            throw new HeadTooLargeException("Head's size can't larger than " + Profile.HEAD_SIZE);
-        }
+
         //将字符串编码为指定编码的字节
         byte[] code = string.getBytes(Profile.CODE_TYPE);
+        if (code.length > Profile.HEAD_SIZE) {
+            throw new HeadTooLargeException("Head's size can't larger than " + Profile.HEAD_SIZE);
+        }
         //填充到目标字节数组中。写进输出流
         byte[] targetBytes = new byte[Profile.HEAD_SIZE];
         for (int i = 0; i < code.length; i++) {
