@@ -1,5 +1,6 @@
 package server.wang.can;
 
+import com.sun.deploy.util.StringUtils;
 import entity.wang.can.OrderEntity;
 import net.wang.can.profiles.Profile;
 import entity.wang.can.FileEntity;
@@ -40,13 +41,13 @@ public class OrderSolver {
 
     //currentPath中存放当前路径和文件名
     public static void upload(String currentPath, InputStream inputStream) throws Exception {
+
         File file = new File(Profile.ROOT_PATH + userFolder + currentPath);
         if (file.exists()) {
             //文件已经存在，把输入流中的数据消耗掉，避免客户端异常
-            Utils.killInputStream(inputStream);
-            throw new Exception("文件已经存在");
+            file.delete();
         }
-        file.createNewFile();
+        createFile(file);
         FileOutputStream outputStream = new FileOutputStream(file);
         Utils.streamCopy(inputStream, outputStream);
         outputStream.close();
@@ -63,6 +64,20 @@ public class OrderSolver {
         FileInputStream fileInputStream = new FileInputStream(file);
         Utils.streamCopy(fileInputStream, outputStream);
         fileInputStream.close();
+    }
+
+
+    public static void createFile(File file) throws Exception {
+        if (file==null) {
+            return;
+        }
+        if(file.exists()){
+            file.delete();
+        }
+        if (!file.getParentFile().exists()) {
+            file.getParentFile().mkdirs();
+        }
+        file.createNewFile();
     }
 
 }

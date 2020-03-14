@@ -15,9 +15,11 @@ public class ServerApplication {
         ServerSocket server = new ServerSocket(Profile.PORT);
         while(true)
         {
+            System.out.println("begin to listen");
             Socket socket = server.accept();
             ServerSocketRunnable serverSocketRunnable = new ServerSocketRunnable(socket,new IOServletImp());
             executor.execute(serverSocketRunnable);
+            System.out.println("one task begin");
         }
     }
 
