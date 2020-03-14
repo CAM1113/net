@@ -58,7 +58,12 @@ public class OrderSolver {
     }
 
     //currentPath:下载文件的路径，包含文件名
-    public static Head downLoad(String currentPath, File localFile) throws Exception {
+    //localpath：下载的路径，包含文件名
+    public static Head downLoad(String currentPath, String localpath) throws Exception {
+        if (!currentPath.startsWith(Profile.FILE_SEPARATOR)) {
+            currentPath = Profile.FILE_SEPARATOR + currentPath;
+        }
+        File localFile = new File(localpath);
         if (localFile.exists()) {
             throw new Exception("localFile has already exist");
         }
@@ -94,19 +99,13 @@ public class OrderSolver {
         return returnHead;
     }
 
-    //创建Socket对象，同时写进Head
-    private static Socket getSocket(Head head) throws Exception {
-        Socket socket = new Socket(Profile.SERVER_IP, Profile.PORT);
-        OutputStream outputStream = socket.getOutputStream();
-        WriteUtils.writeHead(head, outputStream);
-        return socket;
-    }
-
-
     public static void uploadFolders(String localPath, String targetPath) throws Exception {
         if (localPath == null || localPath.equals("") || targetPath == null) {
             System.out.println("path is error");
             return;
+        }
+        if (!targetPath.startsWith(Profile.FILE_SEPARATOR)) {
+            targetPath = Profile.FILE_SEPARATOR + targetPath;
         }
         File file = new File(localPath);
         if (file == null || !file.exists()) {
@@ -125,7 +124,17 @@ public class OrderSolver {
         }
     }
 
-    private static Head mkDir(String currentPath) throws Exception{
+    //创建Socket对象，同时写进Head
+    private static Socket getSocket(Head head) throws Exception {
+        Socket socket = new Socket(Profile.SERVER_IP, Profile.PORT);
+        OutputStream outputStream = socket.getOutputStream();
+        WriteUtils.writeHead(head, outputStream);
+        return socket;
+    }
+
+
+    private static Head mkDir(String currentPath) throws Exception {
+
         Head head = new Head(Protocals.STATUS_SUCCESS, CommandString.mkdir, Protocals.CONTENT_NONE, currentPath);
         Socket socket = getSocket(head);
         socket.shutdownOutput();

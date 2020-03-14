@@ -1,0 +1,4 @@
+上传可以上传文件加及其下所有文件
+下载只能下载一个文件
+上传命令 upload G:\test.txt test.txt
+下载命令download test.txt G:\test.txt
