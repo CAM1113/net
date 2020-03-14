@@ -7,6 +7,6 @@ public class Profile {
     public static final String FILE_SEPARATOR = "/";
     public static final String CODE_TYPE = "utf-8";
 
-    public static final String ROOT_PATH = "/root/";
+    public static final String ROOT_PATH = "/root/fileShared";
     public static final String userFolder = "";
 }
