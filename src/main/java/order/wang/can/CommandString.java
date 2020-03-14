@@ -5,4 +5,5 @@ public interface CommandString {
     String upload = "/order/upload";
     String downLoad = "order/downLoad";
     String delete = "order/delete";
+    String mkdir = "order/mkdir";
 }

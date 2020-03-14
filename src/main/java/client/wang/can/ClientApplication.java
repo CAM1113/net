@@ -12,18 +12,10 @@ import java.net.Socket;
 public class ClientApplication {
     public static void main(String[] arge) throws Exception {
         File file = new File("D:\\CAM.jks");
-        Head head = OrderSolver.upload(file,Profile.FILE_SEPARATOR+"testfilefolder"+Profile.FILE_SEPARATOR);
+        Head head = OrderSolver.upload(file, Profile.FILE_SEPARATOR + "testfilefolder" + Profile.FILE_SEPARATOR);
         Gson gson = new Gson();
-        String s=  gson.toJson(head);
+        String s = gson.toJson(head);
         System.out.println(s);
-
-//        OrderSolver.downLoad("testNew\\1409.1556.pdf", new File("E:\\1409.1556.pdf"));
-
-//        OrderSolver.deleteFile("wang\\");
-
-
-//        OrderSolver.ls("\\");
-
     }
 
 

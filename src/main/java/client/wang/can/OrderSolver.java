@@ -95,11 +95,45 @@ public class OrderSolver {
     }
 
     //创建Socket对象，同时写进Head
-    public static Socket getSocket(Head head) throws Exception {
+    private static Socket getSocket(Head head) throws Exception {
         Socket socket = new Socket(Profile.SERVER_IP, Profile.PORT);
         OutputStream outputStream = socket.getOutputStream();
         WriteUtils.writeHead(head, outputStream);
         return socket;
+    }
+
+
+    public static void uploadFolders(String localPath, String targetPath) throws Exception {
+        if (localPath == null || localPath.equals("") || targetPath == null) {
+            System.out.println("path is error");
+            return;
+        }
+        File file = new File(localPath);
+        if (file == null || !file.exists()) {
+            System.out.println("file is null");
+            return;
+        }
+        File[] fileList = file.listFiles();
+        for (File fileItem : fileList) {
+            if (fileItem.isDirectory()) {
+                OrderSolver.mkDir(targetPath + Profile.FILE_SEPARATOR + fileItem.getName());
+                uploadFolders(localPath + File.separator + fileItem.getName(),
+                        targetPath + Profile.FILE_SEPARATOR + fileItem.getName());
+            } else {
+                OrderSolver.upload(fileItem, targetPath + Profile.FILE_SEPARATOR + fileItem.getName());
+            }
+        }
+    }
+
+    private static Head mkDir(String currentPath) throws Exception{
+        Head head = new Head(Protocals.STATUS_SUCCESS, CommandString.mkdir, Protocals.CONTENT_NONE, currentPath);
+        Socket socket = getSocket(head);
+        socket.shutdownOutput();
+        InputStream inputStream = socket.getInputStream();
+        Head returnHead = ReadUtils.readHead(inputStream);
+        socket.shutdownInput();
+        socket.close();
+        return returnHead;
     }
 
 }

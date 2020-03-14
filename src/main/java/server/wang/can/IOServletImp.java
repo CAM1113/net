@@ -36,6 +36,8 @@ public class IOServletImp implements IOServlet {
             case CommandString.delete:
                 delete(head, inputStream, outputStream);
                 break;
+            case CommandString.mkdir:
+                mkdir(head, inputStream, outputStream);
         }
     }
 
@@ -154,5 +156,13 @@ public class IOServletImp implements IOServlet {
         }
     }
 
+    public void mkdir(Head head, InputStream inputStream, OutputStream outputStream) throws Exception {
+        String currentPath = Utils.exchangeFileSaperator(head.getOther());
+        File file = new File(Profile.ROOT_PATH + userFolder + currentPath);
+        if (file.exists()) {
+            delFiles(file.getAbsolutePath());
+        }
+        file.mkdir();
+    }
 
 }
