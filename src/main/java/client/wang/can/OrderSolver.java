@@ -41,7 +41,7 @@ public class OrderSolver {
         if (!file.exists()) {
             throw new Exception("file doesn't exist");
         }
-        Head head = new Head(Protocals.STATUS_SUCCESS, CommandString.upload, Protocals.CONTENT_FILE, currentPath + file.getName());
+        Head head = new Head(Protocals.STATUS_SUCCESS, CommandString.upload, Protocals.CONTENT_FILE, currentPath);
         Socket socket = getSocket(head);
 
         OutputStream outputStream = socket.getOutputStream();
@@ -112,15 +112,15 @@ public class OrderSolver {
             System.out.println("file is null");
             return;
         }
-        File[] fileList = file.listFiles();
-        for (File fileItem : fileList) {
-            if (fileItem.isDirectory()) {
-                OrderSolver.mkDir(targetPath + Profile.FILE_SEPARATOR + fileItem.getName());
+        if (file.isDirectory()) {
+            OrderSolver.mkDir(targetPath);
+            File[] fileList = file.listFiles();
+            for (File fileItem : fileList) {
                 uploadFolders(localPath + File.separator + fileItem.getName(),
                         targetPath + Profile.FILE_SEPARATOR + fileItem.getName());
-            } else {
-                OrderSolver.upload(fileItem, targetPath + Profile.FILE_SEPARATOR + fileItem.getName());
             }
+        } else {
+            OrderSolver.upload(file, targetPath);
         }
     }
 

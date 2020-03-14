@@ -12,16 +12,14 @@ import java.util.Scanner;
 
 public class ClientApplication {
     public static void main(String[] arge) throws Exception {
-        int command = 0;
         Scanner scanner = new Scanner(System.in);
-        String targetPath = "";
-        String localPath = "";
         System.out.println("=========远程文件管理=========");
         System.out.print("请输入命令:");
         String commands = scanner.nextLine().trim();
         String[] arr = commands.split("\\s+");
         if (arr.length != 3) {
             System.out.println("命令参数错误，注意使用空格分割");
+            return;
         }
         if (arr[0].equals("download")) {
             System.out.print("确定进行下载操作(0取消，1确定)");
